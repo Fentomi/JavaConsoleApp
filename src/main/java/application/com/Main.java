@@ -1,7 +1,6 @@
 package application.com;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
@@ -9,8 +8,15 @@ public class Main {
 		System.out.println("Вход в систему 'Пропер'...");
 		authorization();
 
+		String proper =
+				"""
+					⌈¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯⌉
+					|    WELCOME TO PROPER SYSTEM       |
+					⌊___________________________________」
+				""";
+		System.out.print(proper);
 		System.out.println("Добро пожаловать в меню системы 'Пропер', " + CurrentUser.userLogin + '.');
-		properSystem();
+		properSystem(true);
 	}
 	private static void authorization() throws SQLException, ClassNotFoundException {
 		Scanner scanner = new Scanner(System.in);
@@ -32,29 +38,66 @@ public class Main {
 			CurrentUser.userId = Integer.valueOf(user.getString("user_id"));
 		}
 	}
-	private static void properSystem() {
-		Scanner scanner = new Scanner(System.in);
+	private static void properSystem(boolean showMenu) {
+		if (showMenu) {
+			String menu = """
+				Команды просмотра инвентаря:
+				⌈¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯⌉
+				| /Просмотреть инвентарь |
+				⌊________________________」
+				Команды записи инвентаря:
+				⌈¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯⌉ ⌈¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯⌉
+				| /Записать инвентарь на себя | | /Просмотреть записанный инвентарь |
+				⌊_____________________________」 ⌊__________________________________」
+				Команды сдачи инвентаря:
+				⌈¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯⌉
+				| /Сдать инвентарь |
+				⌊__________________」
+				Команды Выхода из системы:
+				⌈¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯⌉
+				| /Выйти из системы |
+				⌊___________________」
+				""";
+			System.out.println();
+			System.out.println(menu);
+		}
 
-		System.out.println("Что желаете? (Просмотреть инвентарь, Взять инвентарь, Сдать инвентарь, Выйти из системы)");
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("Введите команду: ");
 		String userAnswer = scanner.nextLine();
 
-		if (Objects.equals(userAnswer, "Просмотреть инвентарь")) inventoryPanelOpen();
-		else if (Objects.equals(userAnswer, "Взять инвентарь")) takeInventoryPanelOpen();
-		else if (Objects.equals(userAnswer, "Сдать инвентарь")) passInventoryPanelOpen();
-		else if (Objects.equals(userAnswer, "Выйти из системы")) quitSystem();
-		else { System.out.println("Ошибка ввода, повторите попытку"); properSystem(); }
+        switch (userAnswer) {
+            case "/Просмотреть инвентарь" -> showInventory();
+			case "/Записать инвентарь на себя" -> takeInventoryPanelOpen();
+			case "/Просмотреть записанный инвентарь" -> showTakenInventory();
+            case "/Сдать инвентарь" -> passInventoryPanelOpen();
+			case "/Просмотреть сданный инвентарь" -> showPassInventory();
+            case "/Выйти из системы" -> quitSystem();
+            case null, default -> {
+                System.out.println("Ошибка ввода, повторите попытку.");
+                properSystem(false);
+            }
+        }
 	}
-	private static void inventoryPanelOpen() {
+	private static void showInventory() {
 		System.out.println("Просматриваем инвентарь...");
-		properSystem();
+		properSystem(false);
 	}
 	private static void takeInventoryPanelOpen() {
 		System.out.println("Берем что-то из инвентаря...");
-		properSystem();
+		properSystem(false);
+	}
+	private static void showTakenInventory() {
+		System.out.println("Берем что-то из взятого инвентаря...");
+		properSystem(false);
+	}
+	private static void showPassInventory() {
+		System.out.println("Берем что-то из сданного инвентаря...");
+		properSystem(false);
 	}
 	private static void passInventoryPanelOpen() {
 		System.out.println("Сдаем инвентарь...");
-		properSystem();
+		properSystem(false);
 	}
 	private static void quitSystem() {
 		System.out.println("Бай-бай");
