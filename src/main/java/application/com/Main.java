@@ -8,6 +8,8 @@ public class Main {
 	public static void main(String[] args) throws SQLException, ClassNotFoundException {
 		System.out.println("Вход в систему 'Пропер'...");
 		authorization();
+
+		System.out.println("Добро пожаловать в меню системы 'Пропер', " + CurrentUser.userLogin + '.');
 		properSystem();
 	}
 	private static void authorization() throws SQLException, ClassNotFoundException {
@@ -31,7 +33,30 @@ public class Main {
 		}
 	}
 	private static void properSystem() {
-		System.out.println("Добро пожаловать в меню системы 'Пропер', " + CurrentUser.userLogin + '.');
+		Scanner scanner = new Scanner(System.in);
+
+		System.out.println("Что желаете? (Просмотреть инвентарь, Взять инвентарь, Сдать инвентарь, Выйти из системы)");
+		String userAnswer = scanner.nextLine();
+
+		if (Objects.equals(userAnswer, "Просмотреть инвентарь")) inventoryPanelOpen();
+		else if (Objects.equals(userAnswer, "Взять инвентарь")) takeInventoryPanelOpen();
+		else if (Objects.equals(userAnswer, "Сдать инвентарь")) passInventoryPanelOpen();
+		else if (Objects.equals(userAnswer, "Выйти из системы")) quitSystem();
+		else { System.out.println("Ошибка ввода, повторите попытку"); properSystem(); }
+	}
+	private static void inventoryPanelOpen() {
+		System.out.println("Просматриваем инвентарь...");
+		properSystem();
+	}
+	private static void takeInventoryPanelOpen() {
+		System.out.println("Берем что-то из инвентаря...");
+		properSystem();
+	}
+	private static void passInventoryPanelOpen() {
+		System.out.println("Сдаем инвентарь...");
+		properSystem();
+	}
+	private static void quitSystem() {
+		System.out.println("Бай-бай");
 	}
 }
-
