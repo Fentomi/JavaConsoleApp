@@ -44,11 +44,26 @@ public class Proper {
         String userAnswer = scanner.nextLine();
 
         switch (userAnswer) {
-            case "/Просмотреть инвентарь" -> showInventory();
-            case "/Записать инвентарь на себя" -> takeInventoryPanelOpen();
-            case "/Просмотреть записанный инвентарь" -> showTakenInventory();
-            case "/Сдать инвентарь" -> passInventoryPanelOpen();
-            case "/Просмотреть сданный инвентарь" -> showPassInventory();
+            case "/Просмотреть инвентарь" -> {
+                showInventory();
+                properOpenSystem(false);
+            }
+            case "/Записать инвентарь на себя" -> {
+                takeInventoryPanelOpen();
+                properOpenSystem(false);
+            }
+            case "/Просмотреть записанный инвентарь" -> {
+                showTakenInventory();
+                properOpenSystem(false);
+            }
+            case "/Сдать инвентарь" -> {
+                passInventoryPanelOpen();
+                properOpenSystem(false);
+            }
+            case "/Просмотреть сданный инвентарь" -> {
+                showPassInventory();
+                properOpenSystem(false);
+            }
             case "/Выйти из системы" -> quitSystem();
             case null, default -> {
                 System.out.println("Ошибка ввода, повторите попытку.");
@@ -82,23 +97,32 @@ public class Proper {
         }
         System.out.println();
 
-        properOpenSystem(false);
     }
-    private static void takeInventoryPanelOpen() {
-        System.out.println("Берем что-то из инвентаря...");
-        properOpenSystem(false);
+    private static void takeInventoryPanelOpen() throws SQLException, ClassNotFoundException {
+        showInventory();
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Что хотите взять: ");
+        String eqipmentName = scanner.nextLine();
+        System.out.print("Сколько хотите взять: ");
+        int equipmentCount = Integer.parseInt(scanner.nextLine());
+
+        try {
+            InventoryService.takeInventory(eqipmentName, equipmentCount);
+        } catch(SQLException exception) {
+
+            System.out.println("Успешно. Вы можете посмотреть взятый инвентарь через команду /Просмотреть записанный инвентарь");
+        } catch (Exception _) { }
+
     }
     private static void showTakenInventory() throws SQLException, ClassNotFoundException {
         System.out.println("Берем что-то из взятого инвентаря...");
-        properOpenSystem(false);
     }
     private static void showPassInventory() throws SQLException, ClassNotFoundException {
         System.out.println("Берем что-то из сданного инвентаря...");
-        properOpenSystem(false);
     }
     private static void passInventoryPanelOpen() throws SQLException, ClassNotFoundException {
         System.out.println("Сдаем инвентарь...");
-        properOpenSystem(false);
     }
     private static void quitSystem() {
         System.out.println("Бай-бай");
