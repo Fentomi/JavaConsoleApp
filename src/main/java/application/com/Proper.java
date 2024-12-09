@@ -103,20 +103,45 @@ public class Proper {
 
         Scanner scanner = new Scanner(System.in);
         System.out.print("Что хотите взять: ");
-        String eqipmentName = scanner.nextLine();
+        String equipmentName = scanner.nextLine();
         System.out.print("Сколько хотите взять: ");
         int equipmentCount = Integer.parseInt(scanner.nextLine());
 
         try {
-            InventoryService.takeInventory(eqipmentName, equipmentCount);
+            InventoryService.takeInventory(equipmentName, equipmentCount);
         } catch(SQLException exception) {
-
+            try {
+                InventoryService.reduceCountInventory(equipmentName, equipmentCount);
+            } catch (SQLException _) { }
             System.out.println("Успешно. Вы можете посмотреть взятый инвентарь через команду /Просмотреть записанный инвентарь");
         } catch (Exception _) { }
-
     }
     private static void showTakenInventory() throws SQLException, ClassNotFoundException {
-        System.out.println("Берем что-то из взятого инвентаря...");
+        System.out.println("Посмотрим на то, что я взял..");
+
+        ResultSet table = InventoryService.getTakenInventory();
+        // edit
+        java.sql.ResultSetMetaData metaData = table.getMetaData();
+        int columnCount = metaData.getColumnCount();
+
+        System.out.println("| Айди | Название оборудования | Количество |");
+        System.out.println("---------------------------------------------");
+        int stringLenght = 0;
+        while (table.next()) {
+            System.out.print("| ");
+
+            stringLenght = 0;
+            for (int i = 1; i <= columnCount; i++) {
+                String string = table.getString(i) + " | ";
+                System.out.print(string);
+                stringLenght += string.length();
+            }
+            System.out.println();
+        }
+        for (int j = 1; j <= stringLenght; j++) {
+            System.out.print('-');
+        }
+        System.out.println();
     }
     private static void showPassInventory() throws SQLException, ClassNotFoundException {
         System.out.println("Берем что-то из сданного инвентаря...");
