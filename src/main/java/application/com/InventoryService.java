@@ -1,5 +1,4 @@
 package application.com;
-import javax.xml.crypto.Data;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -23,6 +22,10 @@ public class InventoryService {
 
         sqlCommand = "insert into taken_inventory(person_id, inventory_id, equipment_count) values ("+CurrentUser.personId+", "+inventoryId+", "+equipmentCount+");";
         DatabaseController.insert(sqlCommand);
+    }
+    public static void passInventory(String takenInventoryId) throws SQLException, ClassNotFoundException {
+        String sqlCommand = "delete from taken_inventory where taken_inventory_id="+takenInventoryId+";";
+        DatabaseController.delete(sqlCommand);
     }
     public static void reduceCountInventory(String equipmentName, Integer equipmentTakenCount) throws SQLException, ClassNotFoundException {
         String sqlCommand = "select inv.inventory_id, inv.equipment_count from inventory inv, equipment eq where inv.equipment_id = eq.equipment_id and eq.equipment_name = '"+equipmentName+"';";
@@ -50,6 +53,13 @@ public class InventoryService {
         String sqlCommand = "select tk_inv.taken_inventory_id, eq.equipment_name, tk_inv.equipment_count from taken_inventory tk_inv, inventory inv, equipment eq where tk_inv.inventory_id = inv.inventory_id and inv.equipment_id = eq.equipment_id and tk_inv.person_id = "+CurrentUser.personId+";";
         ResultSet table = DatabaseController.select(sqlCommand);
         table.beforeFirst();
+        return table;
+    }
+    public static ResultSet getTakenInventoryInfo(String takenInvnetoryId) throws SQLException, ClassNotFoundException {
+        String sqlCommand = "select tk_inv.equipment_count, eq.equipment_name from taken_inventory tk_inv, equipment eq, inventory inv where taken_inventory_id="+takenInvnetoryId+" and tk_inv.inventory_id=inv.inventory_id and inv.equipment_id=eq.equipment_id;";
+        ResultSet table = DatabaseController.select(sqlCommand);
+        table.beforeFirst();
+        table.next();
         return table;
     }
 }

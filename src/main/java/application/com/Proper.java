@@ -57,11 +57,7 @@ public class Proper {
                 properOpenSystem(false);
             }
             case "/Сдать инвентарь" -> {
-                passInventoryPanelOpen();
-                properOpenSystem(false);
-            }
-            case "/Просмотреть сданный инвентарь" -> {
-                showPassInventory();
+                passInventory();
                 properOpenSystem(false);
             }
             case "/Выйти из системы" -> quitSystem();
@@ -120,7 +116,6 @@ public class Proper {
         System.out.println("Посмотрим на то, что я взял..");
 
         ResultSet table = InventoryService.getTakenInventory();
-        // edit
         java.sql.ResultSetMetaData metaData = table.getMetaData();
         int columnCount = metaData.getColumnCount();
 
@@ -143,11 +138,27 @@ public class Proper {
         }
         System.out.println();
     }
-    private static void showPassInventory() throws SQLException, ClassNotFoundException {
-        System.out.println("Берем что-то из сданного инвентаря...");
-    }
-    private static void passInventoryPanelOpen() throws SQLException, ClassNotFoundException {
-        System.out.println("Сдаем инвентарь...");
+    private static void passInventory() throws SQLException, ClassNotFoundException {
+        System.out.println("Посмотрим, что можно сдать..");
+        showTakenInventory();
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Что хотите сдать (Введите Айди): ");
+        String takenInventoryId = scanner.nextLine();
+
+        ResultSet table = InventoryService.getTakenInventoryInfo(takenInventoryId);
+        int equipmentTakenCount = Integer.parseInt(table.getString("equipment_count"));
+        String equipmentName = table.getString("equipment_name");
+
+        try {
+            InventoryService.passInventory(takenInventoryId);
+        } catch (SQLException _) {
+            try {
+                InventoryService.increaseCountInventory(equipmentName, equipmentTakenCount);
+            } catch (SQLException _) {
+                System.out.println("Успешно. Вы можете посмотреть списанный инвентарь через команду /Просмотреть записанный инвентарь");
+            }
+        }
     }
     private static void quitSystem() {
         System.out.println("Бай-бай");
