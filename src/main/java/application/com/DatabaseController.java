@@ -29,7 +29,7 @@ public class DatabaseController {
         authorization.put("user", "admin");
         authorization.put("password", "admin");
 
-        String url = "jdbc:postgresql://localhost:5432/todo";
+        String url = "jdbc:postgresql://localhost:5432/klining";
         Connection connection = DriverManager.getConnection(url, authorization);
 
         statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
