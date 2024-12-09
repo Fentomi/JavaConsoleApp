@@ -80,7 +80,7 @@ public class Main {
         }
 	}
 	private static void showInventory() {
-		System.out.println("Просматриваем инвентарь...");
+		System.out.println("Просматриваем инвентарь..");
 		properSystem(false);
 	}
 	private static void takeInventoryPanelOpen() {
