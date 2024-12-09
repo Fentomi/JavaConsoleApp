@@ -1,5 +1,7 @@
 package application.com;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Proper {
@@ -11,9 +13,9 @@ public class Proper {
                     ⌊___________________________________」
                 """;
         System.out.print(proper);
-        System.out.println("Добро пожаловать в меню системы 'Пропер', " + CurrentUser.personSurname + ' ' + CurrentUser.personName + '.');
+        System.out.println("Добро пожаловать в меню системы 'Пропер', " + CurrentUser.personSurname + ' ' + CurrentUser.personName + ". Ваша роль в системе: " + CurrentUser.roleName + '.');
     }
-    public static void properOpenSystem(boolean showMenu) {
+    public static void properOpenSystem(boolean showMenu) throws SQLException, ClassNotFoundException {
         if (showMenu) {
             String menu = """
 				Команды просмотра инвентаря:
@@ -54,23 +56,47 @@ public class Proper {
             }
         }
     }
-    private static void showInventory() {
+    private static void showInventory() throws SQLException, ClassNotFoundException {
         System.out.println("Просматриваем инвентарь..");
+        ResultSet inventory = InventoryService.getAllInventory();
+
+        java.sql.ResultSetMetaData metaData = inventory.getMetaData();
+        int columnCount = metaData.getColumnCount();
+
+        System.out.println("| Название оборудования | Количество | Описание |");
+        System.out.println("-------------------------------------------------");
+        int stringLenght = 0;
+        while (inventory.next()) {
+            System.out.print("| ");
+
+            stringLenght = 0;
+            for (int i = 1; i <= columnCount; i++) {
+                String string = inventory.getString(i) + " | ";
+                System.out.print(string);
+                stringLenght += string.length();
+            }
+            System.out.println();
+        }
+        for (int j = 1; j <= stringLenght; j++) {
+            System.out.print('-');
+        }
+        System.out.println();
+
         properOpenSystem(false);
     }
     private static void takeInventoryPanelOpen() {
         System.out.println("Берем что-то из инвентаря...");
         properOpenSystem(false);
     }
-    private static void showTakenInventory() {
+    private static void showTakenInventory() throws SQLException, ClassNotFoundException {
         System.out.println("Берем что-то из взятого инвентаря...");
         properOpenSystem(false);
     }
-    private static void showPassInventory() {
+    private static void showPassInventory() throws SQLException, ClassNotFoundException {
         System.out.println("Берем что-то из сданного инвентаря...");
         properOpenSystem(false);
     }
-    private static void passInventoryPanelOpen() {
+    private static void passInventoryPanelOpen() throws SQLException, ClassNotFoundException {
         System.out.println("Сдаем инвентарь...");
         properOpenSystem(false);
     }
