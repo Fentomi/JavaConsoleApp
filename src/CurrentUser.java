@@ -1,39 +1,44 @@
 public class CurrentUser {
-    private static Integer _userId;
-    private static String _userLogin;
-    private static String _userPassword;
-
-    private static Integer _personId;
-    private static String _personName;
-    private static String _personSurname;
-    private static String _personLastname;
-
-    private static Integer _roleId;
-    private static String _roleName;
-
     // Basic Getters
-    public static Integer getUserId() { return _userId; }
-    public static String getUserLogin() { return _userLogin; }
-    public static String getUserPassword() { return _userPassword; }
+    public static Integer getUserId() { return User._userId; }
+    public static String getUserLogin() { return User._userLogin; }
+    public static String getUserPassword() { return User._userPassword; }
 
-    public static Integer getPersonId() { return _personId; }
-    public static String getPersonName() { return _personName; }
-    public static String getPersonSurname() { return _personSurname; }
-    public static String getPersonLastname() { return _personLastname; }
+    public static Integer getPersonId() { return Person._personId; }
+    public static String getPersonName() { return Person._personName; }
+    public static String getPersonSurname() { return Person._personSurname; }
+    public static String getPersonLastname() { return Person._personLastname; }
 
-    public static Integer getRoleId() { return _roleId; }
-    public static String getRoleName() { return _roleName; }
+    public static Integer getRoleId() { return Role._roleId; }
+    public static String getRoleName() { return Role._roleName; }
 
     // Basic Setters
-    public static void setUserId(Integer newUserId) { _userId = newUserId; }
-    public static void setUserLogin(String newUserLogin) { _userLogin = newUserLogin; }
-    public static void setUserPassword(String newUserPassword) { _userPassword = newUserPassword; }
+    public static void setUserId(Integer newUserId) { User._userId = newUserId; }
+    public static void setUserLogin(String newUserLogin) { User._userLogin = newUserLogin; }
+    public static void setUserPassword(String newUserPassword) { User._userPassword = newUserPassword; }
 
-    public static void setPersonId(Integer newPersonId) { _personId = newPersonId; }
-    public static void setPersonName(String newPersonName) { _personName = newPersonName; }
-    public static void setPersonSurname(String newPersonSurname) { _personSurname = newPersonSurname; }
-    public static void setPersonLastname(String newPersonLastname) { _personLastname = newPersonLastname; }
+    public static void setPersonId(Integer newPersonId) { Person._personId = newPersonId; }
+    public static void setPersonName(String newPersonName) { Person._personName = newPersonName; }
+    public static void setPersonSurname(String newPersonSurname) { Person._personSurname = newPersonSurname; }
+    public static void setPersonLastname(String newPersonLastname) { Person._personLastname = newPersonLastname; }
 
-    public static void setRoleId(Integer newRoleId) { _roleId = newRoleId; }
-    public static void setRoleName(String newRoleName) { _roleName = newRoleName; }
+    public static void setRoleId(Integer newRoleId) { Role._roleId = newRoleId; }
+    public static void setRoleName(String newRoleName) { Role._roleName = newRoleName; }
+}
+
+// Структуры данных
+class User {
+    public static Integer _userId;
+    public static String _userLogin;
+    public static String _userPassword;
+}
+class Person {
+    public static Integer _personId;
+    public static String _personName;
+    public static String _personSurname;
+    public static String _personLastname;
+}
+class Role {
+    public static Integer _roleId;
+    public static String _roleName;
 }
