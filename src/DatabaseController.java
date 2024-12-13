@@ -1,5 +1,12 @@
+import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.Properties;
+
+class DBSettings {
+    protected static String DB_LOGIN = "admin";
+    protected static String DB_PASSWORD = "admin";
+    protected static String DB_URL = "jdbc:postgresql://localhost:5432/klining";
+}
 
 public class DatabaseController {
     private Statement statement;
@@ -24,11 +31,9 @@ public class DatabaseController {
         Class.forName("org.postgresql.Driver");
 
         Properties authorization = new Properties();
-        authorization.put("user", "admin");
-        authorization.put("password", "admin");
-
-        String url = "jdbc:postgresql://localhost:5432/klining";
-        Connection connection = DriverManager.getConnection(url, authorization);
+        authorization.put("user", DBSettings.DB_LOGIN);
+        authorization.put("password", DBSettings.DB_PASSWORD);
+        Connection connection = DriverManager.getConnection(DBSettings.DB_URL, authorization);
 
         statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
