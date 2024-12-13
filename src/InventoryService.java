@@ -21,7 +21,7 @@ public class InventoryService {
         table.next();
         int inventoryId = Integer.parseInt(table.getString("inventory_id"));
 
-        sqlCommand = "insert into taken_inventory(person_id, inventory_id, equipment_count) values ("+CurrentUser.personId+", "+inventoryId+", "+equipmentCount+");";
+        sqlCommand = "insert into taken_inventory(person_id, inventory_id, equipment_count) values ("+CurrentUser.getPersonId()+", "+inventoryId+", "+equipmentCount+");";
         database.insert(sqlCommand);
     }
     public void passInventory(String takenInventoryId) throws SQLException, ClassNotFoundException {
@@ -36,7 +36,7 @@ public class InventoryService {
         int inventoryId = Integer.parseInt(table.getString("inventory_id"));
         int equipmentTableCount = Integer.parseInt(table.getString("equipment_count"));
 
-        sqlCommand = "update inventory set equipment_count="+String.valueOf(equipmentTableCount-equipmentTakenCount)+" where inventory_id="+inventoryId+";";
+        sqlCommand = "update inventory set equipment_count="+(equipmentTableCount-equipmentTakenCount)+" where inventory_id="+inventoryId+";";
         database.insert(sqlCommand);
     }
     public void increaseCountInventory(String equipmentName, Integer equipmentTakenCount) throws SQLException, ClassNotFoundException {
@@ -47,11 +47,11 @@ public class InventoryService {
         int inventoryId = Integer.parseInt(table.getString("inventory_id"));
         int equipmentTableCount = Integer.parseInt(table.getString("equipment_count"));
 
-        sqlCommand = "update inventory set equipment_count="+String.valueOf(equipmentTableCount+equipmentTakenCount)+" where inventory_id="+inventoryId+";";
+        sqlCommand = "update inventory set equipment_count="+(equipmentTableCount+equipmentTakenCount)+" where inventory_id="+inventoryId+";";
         database.insert(sqlCommand);
     }
     public ResultSet getTakenInventory() throws SQLException, ClassNotFoundException {
-        String sqlCommand = "select tk_inv.taken_inventory_id, eq.equipment_name, tk_inv.equipment_count from taken_inventory tk_inv, inventory inv, equipment eq where tk_inv.inventory_id = inv.inventory_id and inv.equipment_id = eq.equipment_id and tk_inv.person_id = "+CurrentUser.personId+";";
+        String sqlCommand = "select tk_inv.taken_inventory_id, eq.equipment_name, tk_inv.equipment_count from taken_inventory tk_inv, inventory inv, equipment eq where tk_inv.inventory_id = inv.inventory_id and inv.equipment_id = eq.equipment_id and tk_inv.person_id = "+CurrentUser.getPersonId()+";";
         ResultSet table = database.select(sqlCommand);
         table.beforeFirst();
         return table;

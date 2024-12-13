@@ -13,7 +13,7 @@ public class Proper {
                     ⌊___________________________________」
                 """;
         System.out.print(proper);
-        System.out.println("Добро пожаловать в меню системы 'Пропер', " + CurrentUser.personSurname + ' ' + CurrentUser.personName + ". Ваша роль в системе: " + CurrentUser.roleName + '.');
+        System.out.println("Добро пожаловать в меню системы 'Пропер', " + CurrentUser.getPersonSurname() + ' ' + CurrentUser.getPersonName() + ". Ваша роль в системе: " + CurrentUser.getRoleName() + '.');
     }
     public static void properOpenSystem(boolean showMenu) throws SQLException, ClassNotFoundException {
         if (showMenu) {

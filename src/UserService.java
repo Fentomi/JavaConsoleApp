@@ -19,20 +19,20 @@ public class UserService {
     }
     public void setCurrentUser(Integer userId) throws SQLException, ClassNotFoundException {
         ResultSet user = UserService.getUserInfo(userId);
-        CurrentUser.userId = Integer.valueOf(user.getString("user_id"));
-        CurrentUser.userLogin = user.getString("user_login");
-        CurrentUser.userPassword = user.getString("user_password");
+        CurrentUser.setUserId(Integer.valueOf(user.getString("user_id")));
+        CurrentUser.setUserLogin(user.getString("user_login"));
+        CurrentUser.setUserPassword(user.getString("user_password"));
 
         ResultSet person = UserService.getPersonInfo(userId);
-        CurrentUser.personId = Integer.valueOf(person.getString("person_id"));
-        CurrentUser.personName = person.getString("person_name");
-        CurrentUser.personSurname = person.getString("person_surname");
-        CurrentUser.personLastname = person.getString("person_lastname");
+        CurrentUser.setPersonId(Integer.valueOf(person.getString("person_id")));
+        CurrentUser.setPersonName(person.getString("person_name"));
+        CurrentUser.setPersonSurname(person.getString("person_surname"));
+        CurrentUser.setPersonLastname(person.getString("person_lastname"));
 
         Integer roleId = Integer.valueOf(person.getString("role_id"));
         ResultSet role = UserService.getRoleInfo(roleId);
-        CurrentUser.roleId = Integer.valueOf(role.getString("role_id"));
-        CurrentUser.roleName = role.getString("role_name");
+        CurrentUser.setRoleId(Integer.valueOf(role.getString("role_id")));
+        CurrentUser.setRoleName(role.getString("role_name"));
     }
     public static ResultSet getUserInfo(Integer userId) throws SQLException, ClassNotFoundException {
         String sqlCommand = "select user_login, user_password, user_id from users where user_id="+userId+";";
