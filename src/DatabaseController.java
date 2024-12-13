@@ -22,14 +22,12 @@ public class DatabaseController {
 
             statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        } catch (SQLException | ClassNotFoundException _) { }
     }
     private void closeConnect() {
         try {
             statement.close();
-        } catch (Exception _) { }
+        } catch (SQLException _) { }
     }
 
     public ResultSet select(String sqlCommand) {
@@ -38,7 +36,7 @@ public class DatabaseController {
             ResultSet table = statement.executeQuery(sqlCommand);
             closeConnect();
             return table;
-        } catch (Exception _) {
+        } catch (SQLException _) {
             return null;
         }
     }
@@ -47,14 +45,14 @@ public class DatabaseController {
             initConnect();
             statement.executeQuery(sqlCommand);
             closeConnect();
-        } catch (Exception _) { }
+        } catch (SQLException _) { }
     }
     public void delete(String sqlCommand) {
         try {
             initConnect();
             statement.executeQuery(sqlCommand);
             closeConnect();
-        } catch (Exception _) { }
+        } catch (SQLException _) { }
     }
     public ResultSet put(String sqlCommand) {
         try {

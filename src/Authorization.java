@@ -9,7 +9,7 @@ public class Authorization {
     public static String _inputLogin;
     public static String _inputPassword;
 
-    public static boolean authorization() throws SQLException, ClassNotFoundException {
+    public static boolean authorization() throws SQLException {
         if(tryAutorizationCount > 2) {
             System.out.println("Использованы все попытки, вход заблокирован.");
             return false;

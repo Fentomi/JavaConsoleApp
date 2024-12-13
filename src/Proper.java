@@ -15,7 +15,7 @@ public class Proper {
         System.out.print(proper);
         System.out.println("Добро пожаловать в меню системы 'Пропер', " + CurrentUser.getPersonSurname() + ' ' + CurrentUser.getPersonName() + ". Ваша роль в системе: " + CurrentUser.getRoleName() + '.');
     }
-    public static void properOpenSystem(boolean showMenu) throws SQLException, ClassNotFoundException {
+    public static void properOpenSystem(boolean showMenu) throws SQLException {
         if (showMenu) {
             String menu = """
 				Команды просмотра инвентаря:
@@ -67,7 +67,7 @@ public class Proper {
             }
         }
     }
-    private static void showInventory() throws SQLException, ClassNotFoundException {
+    private static void showInventory() throws SQLException {
         System.out.println("Просматриваем инвентарь..");
         ResultSet table = inventory.getAllInventory();
 
@@ -94,7 +94,7 @@ public class Proper {
         System.out.println();
 
     }
-    private static void takeInventoryPanelOpen() throws SQLException, ClassNotFoundException {
+    private static void takeInventoryPanelOpen() throws SQLException {
         showInventory();
 
         Scanner scanner = new Scanner(System.in);
@@ -112,7 +112,7 @@ public class Proper {
             System.out.println("Успешно. Вы можете посмотреть взятый инвентарь через команду /Просмотреть записанный инвентарь");
         } catch (Exception _) { }
     }
-    private static void showTakenInventory() throws SQLException, ClassNotFoundException {
+    private static void showTakenInventory() throws SQLException {
         System.out.println("Посмотрим на то, что я взял..");
 
         ResultSet table = inventory.getTakenInventory();
@@ -138,7 +138,7 @@ public class Proper {
         }
         System.out.println();
     }
-    private static void passInventory() throws SQLException, ClassNotFoundException {
+    private static void passInventory() throws SQLException {
         System.out.println("Посмотрим, что можно сдать..");
         showTakenInventory();
 
