@@ -4,26 +4,31 @@ import java.util.Scanner;
 
 public class Authorization {
     private static final UserService userService = new UserService();
+    private static Integer tryAutorizationCount = 0;
+    public static boolean _isAutorize = false;
+    public static String _inputLogin;
+    public static String _inputPassword;
 
-    public static boolean authorization(Integer tryCount) throws SQLException, ClassNotFoundException {
-        if(tryCount > 2) {
+    public static boolean authorization() throws SQLException, ClassNotFoundException {
+        if(tryAutorizationCount > 2) {
             System.out.println("Использованы все попытки, вход заблокирован.");
             return false;
         }
-        System.out.println("Попытка входа номер "+tryCount);
+        System.out.println("Попытка входа номер "+tryAutorizationCount);
 
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите ваш логин: ");
-        String userLogin = scanner.nextLine();
+        _inputLogin = scanner.nextLine();
         System.out.print("Введите ваш пароль: ");
-        String userPassword = scanner.nextLine();
+        _inputPassword = scanner.nextLine();
 
-        boolean isAuthorize = userService.tryAuthorization(userLogin, userPassword);
-        if (!isAuthorize) {
+        _isAutorize = userService.tryAuthorization(_inputLogin, _inputPassword);
+        if (!_isAutorize) {
             System.out.print("Неверный логин или пароль. Попробуйте ещё раз.");
-            authorization(tryCount+1);
+            tryAutorizationCount += 1;
+            authorization();
         } else {
-            ResultSet user = userService.getUserInfo(userLogin, userPassword);
+            ResultSet user = userService.getUserInfo(_inputLogin, _inputPassword);
             Integer userId = Integer.valueOf(user.getString("user_id"));
             userService.setCurrentUser(userId);
             return true;
