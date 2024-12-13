@@ -24,18 +24,11 @@ public class DatabaseController {
                     ResultSet.CONCUR_UPDATABLE);
         } catch (SQLException | ClassNotFoundException _) { }
     }
-    private void closeConnect() {
-        try {
-            statement.close();
-        } catch (SQLException _) { }
-    }
 
     public ResultSet select(String sqlCommand) {
         try {
             initConnect();
-            ResultSet table = statement.executeQuery(sqlCommand);
-            closeConnect();
-            return table;
+            return statement.executeQuery(sqlCommand);
         } catch (SQLException _) {
             return null;
         }
@@ -44,22 +37,18 @@ public class DatabaseController {
         try {
             initConnect();
             statement.executeQuery(sqlCommand);
-            closeConnect();
         } catch (SQLException _) { }
     }
     public void delete(String sqlCommand) {
         try {
             initConnect();
             statement.executeQuery(sqlCommand);
-            closeConnect();
         } catch (SQLException _) { }
     }
     public ResultSet put(String sqlCommand) {
         try {
             initConnect();
-            ResultSet table = statement.executeQuery(sqlCommand);
-            closeConnect();
-            return table;
+            return statement.executeQuery(sqlCommand);
         } catch (Exception _) {
             return null;
         }
