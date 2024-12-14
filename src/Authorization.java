@@ -23,15 +23,15 @@ public class Authorization {
         _inputPassword = scanner.nextLine();
 
         _isAutorize = userService.tryAuthorization(_inputLogin, _inputPassword);
-        if (!_isAutorize) {
-            System.out.print("Неверный логин или пароль. Попробуйте ещё раз.");
-            tryAutorizationCount += 1;
-            authorization();
-        } else {
+        if (_isAutorize) {
             ResultSet user = userService.getUserInfo(_inputLogin, _inputPassword);
             Integer userId = Integer.valueOf(user.getString("user_id"));
             userService.setCurrentUser(userId);
             return true;
+        } else {
+            System.out.print("Неверный логин или пароль. Попробуйте ещё раз.");
+            tryAutorizationCount += 1;
+            authorization();
         }
         return false;
     }

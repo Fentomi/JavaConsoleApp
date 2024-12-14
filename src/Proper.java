@@ -30,10 +30,14 @@ public class Proper {
 				⌈¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯⌉
 				| /Сдать инвентарь |
 				⌊__________________」
+				Команда просмотра команд:
+				⌈¯¯¯¯¯¯¯¯¯¯⌉
+				| /Команды |
+				⌊__________」
 				Команды Выхода из системы:
-				⌈¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯⌉
-				| /Выйти из системы |
-				⌊___________________」
+				⌈¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯⌉ ⌈¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯⌉
+				| /Выйти из системы | | /Разлогиниться    |
+				⌊___________________」⌊___________________」 
 				""";
             System.out.println();
             System.out.println(menu);
@@ -60,7 +64,9 @@ public class Proper {
                 passInventory();
                 properOpenSystem(false);
             }
+            case "/Команды" -> properOpenSystem(true);
             case "/Выйти из системы" -> quitSystem();
+            case "/Разлогироваться" -> logout();
             case null, default -> {
                 System.out.println("Ошибка ввода, повторите попытку.");
                 properOpenSystem(false);
@@ -105,12 +111,11 @@ public class Proper {
 
         try {
             inventory.takeInventory(equipmentName, equipmentCount);
-        } catch(SQLException exception) {
-            try {
-                inventory.reduceCountInventory(equipmentName, equipmentCount);
-            } catch (SQLException _) { }
+            inventory.reduceCountInventory(equipmentName, equipmentCount);
             System.out.println("Успешно. Вы можете посмотреть взятый инвентарь через команду /Просмотреть записанный инвентарь");
-        } catch (Exception _) { }
+        } catch (SQLException exception) {
+            System.out.println("[ERROR] Не удалось взять инвентарь. Пожалуйста, перепроверьте введенные данные.");
+        }
     }
     private static void showTakenInventory() throws SQLException {
         System.out.println("Посмотрим на то, что я взял..");
@@ -139,28 +144,30 @@ public class Proper {
         System.out.println();
     }
     private static void passInventory() throws SQLException {
-        System.out.println("Посмотрим, что можно сдать..");
-        showTakenInventory();
-
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Что хотите сдать (Введите Айди): ");
-        String takenInventoryId = scanner.nextLine();
-
-        ResultSet table = inventory.getTakenInventoryInfo(takenInventoryId);
-        int equipmentTakenCount = Integer.parseInt(table.getString("equipment_count"));
-        String equipmentName = table.getString("equipment_name");
-
         try {
+            System.out.println("Посмотрим, что можно сдать..");
+            showTakenInventory();
+
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Что хотите сдать (Введите Айди): ");
+            String takenInventoryId = scanner.nextLine();
+
+            ResultSet table = inventory.getTakenInventoryInfo(takenInventoryId);
+            int equipmentTakenCount = Integer.parseInt(table.getString("equipment_count"));
+            String equipmentName = table.getString("equipment_name");
+
             inventory.passInventory(takenInventoryId);
-        } catch (SQLException _) {
-            try {
-                inventory.increaseCountInventory(equipmentName, equipmentTakenCount);
-            } catch (SQLException _) {
-                System.out.println("Успешно. Вы можете посмотреть списанный инвентарь через команду /Просмотреть записанный инвентарь");
-            }
+            inventory.increaseCountInventory(equipmentName, equipmentTakenCount);
+            System.out.println("Успешно. Вы можете посмотреть списанный инвентарь через команду /Просмотреть записанный инвентарь");
+        } catch (SQLException exception) {
+            System.out.println("[ERROR] Не удалось сдать инвентарь. Пожалуйста, перепроверьте введенные данные.");
         }
     }
     private static void quitSystem() {
         System.out.println("Бай-бай");
+    }
+    private static void logout() throws SQLException {
+        String[] args = {""};
+        Main.main(args);
     }
 }
