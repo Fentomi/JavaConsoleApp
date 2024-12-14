@@ -66,7 +66,7 @@ public class Proper {
             }
             case "/Команды" -> properOpenSystem(true);
             case "/Выйти из системы" -> quitSystem();
-            case "/Разлогироваться" -> logout();
+            case "/Разлогиниться" -> logout();
             case null, default -> {
                 System.out.println("Ошибка ввода, повторите попытку.");
                 properOpenSystem(false);

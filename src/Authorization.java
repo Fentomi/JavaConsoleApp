@@ -4,18 +4,11 @@ import java.util.Scanner;
 
 public class Authorization {
     private static final UserService userService = new UserService();
-    private static Integer tryAutorizationCount = 0;
     public static boolean _isAutorize = false;
     public static String _inputLogin;
     public static String _inputPassword;
 
     public static boolean authorization() throws SQLException {
-        if(tryAutorizationCount > 2) {
-            System.out.println("Использованы все попытки, вход заблокирован.");
-            return false;
-        }
-        System.out.println("Попытка входа номер "+tryAutorizationCount);
-
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите ваш логин: ");
         _inputLogin = scanner.nextLine();
@@ -29,9 +22,8 @@ public class Authorization {
             userService.setCurrentUser(userId);
             return true;
         } else {
-            System.out.print("Неверный логин или пароль. Попробуйте ещё раз.");
-            tryAutorizationCount += 1;
-            authorization();
+            System.out.println("Неверный логин или пароль. Попробуйте ещё раз.");
+            Main.main(new String[] {});
         }
         return false;
     }
