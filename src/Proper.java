@@ -110,6 +110,12 @@ public class Proper {
         int equipmentCount = Integer.parseInt(scanner.nextLine());
 
         try {
+            Integer availableCountInventory = inventory.getCountInventoryByName(equipmentName);
+            if (equipmentCount > availableCountInventory) {
+                System.out.println("[ERROR] Не удалось взять инвентарь. Количество инвентаря, что вы хотите взять, больше имеющегося.");
+                return;
+            }
+
             inventory.takeInventory(equipmentName, equipmentCount);
             inventory.reduceCountInventory(equipmentName, equipmentCount);
             System.out.println("Успешно. Вы можете посмотреть взятый инвентарь через команду /Просмотреть записанный инвентарь");

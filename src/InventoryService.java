@@ -4,6 +4,18 @@ import java.sql.SQLException;
 public class InventoryService {
     private static final DatabaseController database = new DatabaseController();
 
+    public Integer getCountInventoryByName(String equipmentName) {
+        try {
+            String sqlCommand = "select inv.equipment_count from inventory inv, equipment eq where inv.equipment_id = eq.equipment_id and eq.equipment_name = '"+equipmentName+"';";
+            ResultSet table = database.select(sqlCommand);
+            table.beforeFirst();
+            table.next();
+            return Integer.parseInt(table.getString("equipment_count"));
+        } catch (SQLException e) {
+            System.out.println("Произошла ошибка: " + e.getMessage());
+        }
+        return 0;
+    }
     public ResultSet getAllInventory() {
         try {
             String sqlCommand = """
